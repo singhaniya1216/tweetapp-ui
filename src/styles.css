@@ -1,1 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+
+@import url("https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+@import url('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
+@import url('https://use.fontawesome.com/releases/v5.7.0/css/all.css');
+
+body {
+   /* background: linear-gradient(to right, #ff7e00
+    , #8cc63e
+    );*/
+    background: #74ebd5;
+    background: -webkit-linear-gradient(to right, #74ebd5, #ACB6E5);
+    background: linear-gradient(to right, #74ebd5, #ACB6E5);
+    min-height: 100vh;
+    width:100%;
+}
+
+strong {
+    color: #490b70;
+    font-weight: bold;
+}
+footer{
+    vertical-align: bottom;
+}
+th{
+    color: #490b70;
+}
+
+i{
+    color: #490b70;
+}
+
+.social-link {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    border-radius: 50%;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+  }
+  
+  .social-link:hover,
+  .social-link:focus {
+    background: #ddd;
+    text-decoration: none;
+    color: #555;
+  }
+  
