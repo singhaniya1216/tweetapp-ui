@@ -1,0 +1,47 @@
+
+        <!-- <a *ngIf="!loggedIn" class="nav-bar" mat-icon-button routerLink="/register">Registration</a>
+        <a *ngIf="!loggedIn" class="nav-bar" mat-icon-button routerLink="/login">Login</a>
+        <a *ngIf="loggedIn" class="nav-bar" mat-icon-button routerLink="dashboard">Home</a>
+        <a *ngIf="loggedIn" class="nav-bar" mat-icon-button routerLink="dashboard/tweets">Tweets</a>
+        <a *ngIf="loggedIn" class="nav-bar" mat-icon-button routerLink="/dashboard/users">All Users</a>
+        <a *ngIf="loggedIn" (click)="logoutUser()" class="nav-bar" mat-icon-button>Logout</a> -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white" style="padding: 0; opacity: 90%;">
+    <div class="container-fluid">
+        <a class="navbar-brand" routerLink="/">
+            <img src="assets/images/Untitled-1.png" height="60" />
+        </a>
+        <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed"
+            [attr.aria-expanded]="!isCollapsed" aria-controls="navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngbCollapse]="isCollapsed">
+            <ul class="navbar-nav mr-auto">
+                <li *ngIf="!loggedIn" class="nav-item" style="margin-left: 20px;">
+                    <a class="nav-link" style="color: blue;" routerLink="/login"><strong>Login</strong></a>
+                </li>
+                <li *ngIf="!loggedIn" class="nav-item" style="margin-left: 20px;">
+                    <a class="nav-link" routerLink="/register"><strong>Register</strong></a>
+                </li>
+                <!-- <li *ngIf="!loggedIn" class="nav-item" style="margin-left: 20px;">
+                    <a class="nav-link" routerLink="/RepSchedule"><strong>M R Schedule</strong></a>
+                </li>
+                <li *ngIf="!loggedIn" class="nav-item" style="margin-left: 20px;">
+                    <a class="nav-link" routerLink="/Demand"><strong>Medicine Demand</strong></a>
+                </li>
+                <li *ngIf="!loggedIn" class="nav-item" style="margin-left: 20px;">
+                    <a class="nav-link" routerLink="/Supply"><strong>Medicine Supply</strong></a>
+                </li>
+                <li *ngIf="!loggedIn" class="nav-item" style="margin-left: 20px;">
+                    <a class="nav-link" routerLink="/OrderMedicine"><strong>Order Medicine</strong></a>
+                </li> -->
+            </ul>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item">
+                <button *ngIf="loggedIn" class="nav-link btn btn-primary text-uppercase" (click)="logoutUser()"><strong
+                        style="color: white; margin-right: 7px; margin-left: 7px;">Logout</strong></button>
+            </li>
+        </ul>
+    </div>
+</nav>

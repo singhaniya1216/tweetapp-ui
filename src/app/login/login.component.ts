@@ -35,6 +35,8 @@ export class LoginComponent implements OnInit {
         this.token = data.token;
         this.loginservice.setToken(this.token);
         this.validate(this.token);
+      },error => {
+        this.error = true;
       }
     );
   }
@@ -45,6 +47,7 @@ export class LoginComponent implements OnInit {
         console.log(data);
         this.jwt.username = data.username;
         this.jwt.valid = data.valid;
+        this.loginservice.setLoggedUser(this.jwt.username);
         console.log(this.jwt);
         if (this.jwt.valid) {
           this.gotoHomePage();

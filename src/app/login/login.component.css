@@ -1,0 +1,8 @@
+.rounded-pill{
+    width: 30ch;
+    height: 5ch;
+}
+
+.alert {
+    display:inline-block;
+}
