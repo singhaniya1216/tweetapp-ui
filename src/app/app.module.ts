@@ -11,6 +11,8 @@ import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { AllUsersComponent } from './all-users/all-users.component';
+import { GetUserComponent } from './get-user/get-user.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
     HomeComponent,
     NavbarComponent,
     RegistrationComponent,
-    PasswordResetComponent
+    PasswordResetComponent,
+    AllUsersComponent,
+    GetUserComponent
   ],
   imports: [
     BrowserModule,

@@ -1,46 +1,50 @@
 <app-navbar></app-navbar>
 
 <body>
-  <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm.value)">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="py-5">
       <div class="container">
         <div class="row text-center">
-          <div class="col-xl-5 mx-auto col-sm-8 mb-4">
-            <div class="bg-white rounded shadow-lg py-5 px-4">
-              <h6 class="msg-info py-3">Please login to your account</h6>
-              <div [hidden]="!error" class="alert alert-danger rounded-pill w-75 p-2">
-                Invalid Username or Password
-              </div>
-              <div class="form-row justify-content-center">
-                <div class="form-group">
-                  <label class="form-control-label text-muted">Username</label>
-                  <input id="userid" name="userid" ngModel type="text" placeholder="Username"
-                    class="form-control rounded-pill border-info shadow-sm" #userid="ngModel" required />
-                  <div [hidden]="userid.valid || userid.pristine" class="alert alert-danger rounded-pill w-75 p-2"
-                    style="margin-top: 5px">
-                    Username Required
-                  </div>
+          <div class="col-4 col-lg-4 mx-auto mb-4">
+            <div class="bg-white rounded shadow-lg py-4 px-4">
+              <h5 class="msg-info py-3">Please login to your account</h5>
+
+              <div class="form-group row justify-content-center">
+                <div [hidden]="!error" class="alert alert-danger rounded-pill p-1">
+                  Invalid Username or Password
                 </div>
               </div>
-              <div class="form-row justify-content-center">
-                <div class="form-group ">
-                  <label class="form-control-label text-muted">Password</label>
-                  <input id="password" name="password" ngModel type="password" placeholder="Password"
-                    class="form-control rounded-pill border-info shadow-sm text-primary" #password="ngModel" required />
-                  <div [hidden]="password.valid || password.pristine" class="alert alert-danger rounded-pill w-75 p-2"
-                    style="margin-top: 5px;">
-                    Password Required
-                  </div>
+
+              <div class="form-group row justify-content-center">
+                <label class="form-control-label text-muted">Username</label>
+                <input formControlName="username" type="text" placeholder="Username"
+                  class="form-control rounded-pill border-info shadow-sm"
+                  [ngClass]="{'is-invalid': (submitted && f['username'].errors) || (submitted && !isUsernameExist)}"
+                  required />
+                <div *ngIf="((submitted && f['username'].errors) || (submitted && !isUsernameExist))"
+                  class="invalid-feedback">
+                  <div *ngIf="f['username'].errors?.['required']">Username is required</div>
                 </div>
               </div>
-              <div class="row justify-content-center my-3 px-3">
-                <button type="submit" [disabled]="!loginForm.form.valid"
-                  class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">
+
+              <div class="form-group row justify-content-center">
+                <label class="form-control-label text-muted">Password</label>
+                <input formControlName="password" type="text" placeholder="Password"
+                  class="form-control rounded-pill border-info shadow-sm"
+                  [ngClass]="{'is-invalid': submitted && f['password'].errors}" required />
+                <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                  <div *ngIf="f['password'].errors['required']">Password is required</div>
+                </div>
+              </div>
+
+              <div class="form-group row justify-content-center mt-4">
+                <button type="submit" class="btn btn-primary btn-block text-uppercase mb-3 rounded-pill shadow-sm">
                   Sign in
                 </button>
               </div>
+
               <div class="row justify-content-center my-2">
-                <a href="/login"><small class="text-muted">Forgot Password?</small></a>
+                <a href="/reset"><small class="text-muted">Forgot Password?</small></a>
               </div>
             </div>
           </div>

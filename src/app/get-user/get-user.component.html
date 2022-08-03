@@ -1,0 +1,79 @@
+<app-navbar></app-navbar>
+
+<body>
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-5 col-lg-5 mx-auto mb-2">
+                    <div class="bg-white rounded shadow-lg pl-3">
+
+                        <div class="align-items-center d-flex">
+                            <div class="flex-grow-0 ms-2">
+                                <img src="/assets/images/272-2720607_this-icon-for-gender-neutral-user-circle-hd.png"
+                                    alt="Avatar" width="100" class="p-2 justify-content-right">
+                            </div>
+                            <div class="flex-grow-0 text-start" style="margin: 30px;">
+                                <h4 class="font-weight-bold">
+                                    {{userResponse.firstName}} {{userResponse.lastName}}</h4>
+                                <p class="font-italic text-muted mb-0 small">@{{userResponse.username}}</p>
+                                <p class="font-weight-bold text-muted my-2" style="padding-top: 10px;">
+                                    Email - {{userResponse.email}}</p>
+                                <p class="font-weight-bold text-muted">
+                                    Mobile No - {{userResponse.contactNumber}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngFor="let tweet of tweets">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-5 col-lg-5 mx-auto mb-2">
+                        <div class="bg-white rounded shadow-lg pl-3">
+
+                            <div class="align-items-center d-flex">
+                                <div class="flex-grow-0 text-start" style="margin: 30px;">
+                                    <p class="font-italic text-muted mb-0 small">@{{tweet.createdBy}}</p>
+                                    <h6 class="mt-3">{{tweet.tweetMessage}}</h6>
+                                    <h6>{{tweet.tag}}</h6>
+                                    <button class="btn btn-block btn-primary"><i class="fa fa-thumbs-up">Like</i> </button>
+
+                                    <div *ngFor="let replyTweet of tweet.repliedToTweet">
+                                        <div class="container">
+                                            <div class="row text-center">
+                                                    <div class="bg-white rounded shadow-lg pl-3">
+                            
+                                                        <div class="align-items-center d-flex">
+                                                            <div class="flex-grow-0 text-start" style="margin: 30px;">
+                                                                <p class="font-italic text-muted mb-0 small">@{{replyTweet.createdBy}}</p>
+                                                                <p class="mt-3">{{replyTweet.tweetMessage}}</p>
+                                                                <p>{{replyTweet.tag}}</p>
+                                                                <!-- <p class="font-weight-bold text-muted my-2" style="padding-top: 10px;">
+                                                                    Email - {{userResponse.email}}</p>
+                                                                <p class="font-weight-bold text-muted">
+                                                                    Mobile No - {{userResponse.contactNumber}}</p> -->
+                                                            </div>
+                                                        </div>
+                            
+                                                    </div>
+                                                </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- <p class="font-weight-bold text-muted my-2" style="padding-top: 10px;">
+                                        Email - {{userResponse.email}}</p>
+                                    <p class="font-weight-bold text-muted">
+                                        Mobile No - {{userResponse.contactNumber}}</p> -->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>

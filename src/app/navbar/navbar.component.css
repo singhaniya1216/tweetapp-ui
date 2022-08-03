@@ -1,7 +1,7 @@
 .navbar .navbar-nav > li > a:hover, .navbar .navbar-nav > li > a:focus {
     /* color:black; */
     text-decoration: underline;
-    transform: scale(1.2);
+    /* transform: scale(1.2); */
 }
 
 /* .navbar .container-fluid> a:hover, .navbar > a:focus {

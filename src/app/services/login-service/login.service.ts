@@ -15,12 +15,13 @@ export class LoginService {
 
   constructor(private http:HttpClient) { }
 
-  getUser(username: string | any): Observable<any>{
-    return this.http.get(`${this.url}/user/search/${username}`);
+  getUser(username: string | any, token:string): Observable<any>{
+    const headers = new HttpHeaders().set('Authorization', token);
+    return this.http.get(`${this.url}/user/search/${username}`,{headers});
   }
 
 
-  forgotPassword(password: string | any, username:string | any): Observable<any> {
+  forgotPassword(password: string, username:string | any): Observable<any> {
     let queryParams = new HttpParams();
     queryParams = queryParams.append("password",password);
     return this.http.get(`${this.url}/${username}/forgot`,{params:queryParams});
@@ -28,8 +29,9 @@ export class LoginService {
   }
 
 
-  getAllUsers():Observable<any>{
-    return this.http.get(`${this.url}/users/all`);
+  getAllUsers(token:string | any):Observable<any>{
+    const headers = new HttpHeaders().set('Authorization', token);
+    return this.http.get(`${this.url}/users/all`,{headers});
   }
 
 

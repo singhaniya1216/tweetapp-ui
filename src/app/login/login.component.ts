@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, NgForm, NgModel } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, NgModel, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JwtResponse } from '../model/jwt-response';
 import { Signin } from '../model/signin';
 import { LoginService } from '../services/login-service/login.service';
+import Validation from '../services/validation';
 
 @Component({
   selector: 'app-login',
@@ -11,21 +12,41 @@ import { LoginService } from '../services/login-service/login.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
+
+  form: FormGroup = new FormGroup({
+    username: new FormControl(''),
+    password: new FormControl(''),
+  });
+
+  submitted : boolean = false;
+  isUsernameExist :boolean = true;
+
   signin: Signin = new Signin();
   jwt: JwtResponse = new JwtResponse();
   token: any;
 
   error = false;
 
-  constructor(private loginservice: LoginService, private router: Router) {}
+  constructor(private formBuilder:FormBuilder, private loginservice: LoginService, private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
 
-  onSubmit(form: any) {
-    this.signin.username = form.userid;
-    this.signin.password = form.password;
+  get f() { 
+    return this.form.controls; 
+  }
+
+  onSubmit() {
+    this.submitted=true;
+    this.signin=Object.assign({},this.form.value);
     console.log(this.signin);
+    if(this.signin.username!='' && this.signin.password!=''){
     this.login();
+  }
   }
 
   login() {
@@ -35,7 +56,8 @@ export class LoginComponent implements OnInit {
         this.token = data.token;
         this.loginservice.setToken(this.token);
         this.validate(this.token);
-      },error => {
+      },err => {
+        console.log(err.error.message);
         this.error = true;
       }
     );
@@ -57,6 +79,7 @@ export class LoginComponent implements OnInit {
   }
 
   gotoHomePage() {
+    console.log("going to home page");
     this.router.navigate(['']);
   }
 }
