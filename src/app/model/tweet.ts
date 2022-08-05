@@ -5,6 +5,5 @@ export class Tweet {
     createdDateTime:Date;
     repliedToTweet:Tweet[];
     tag:string;
-    likedBy:Set<string>;
-    replyFlag:boolean;
+    likedBy:string[];
 }

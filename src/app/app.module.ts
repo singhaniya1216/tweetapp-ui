@@ -13,6 +13,10 @@ import { RegistrationComponent } from './registration/registration.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { AllUsersComponent } from './all-users/all-users.component';
 import { GetUserComponent } from './get-user/get-user.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DateAgoPipe } from './pipes/date-ago.pipe';
+import { SetSizePipe } from './pipes/set-size.pipe';
+import { LikedByPipePipe } from './pipes/liked-by-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -23,7 +27,10 @@ import { GetUserComponent } from './get-user/get-user.component';
     RegistrationComponent,
     PasswordResetComponent,
     AllUsersComponent,
-    GetUserComponent
+    GetUserComponent,
+    DateAgoPipe,
+    SetSizePipe,
+    LikedByPipePipe
   ],
   imports: [
     BrowserModule,
@@ -31,7 +38,8 @@ import { GetUserComponent } from './get-user/get-user.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

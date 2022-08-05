@@ -1,2 +1,306 @@
 <app-navbar></app-navbar>
-<p>home works!</p>
+
+<body>
+  <div class="container-fluid pt-5 pb-2">
+    <div class="row py-1 text-center">
+      <div class="col-6 col-lg-6 mx-auto">
+        <div class="bg-white rounded shadow-lg px-3 py-3">
+
+          <div class="d-flex">
+            <div class="flex-grow-0 ms-2 my-auto">
+              <img src="/assets/images/272-2720607_this-icon-for-gender-neutral-user-circle-hd.png" alt="Avatar"
+                width="150px" class="img-responsive p-2 justify-content-right">
+            </div>
+            <div class="flex-grow-1 row px-5 py-3">
+              <div class="col-auto text-start">
+                <h5 class="font-weight-bold">
+                  {{userResponse.firstName}} {{userResponse.lastName}}</h5>
+              </div>
+              <div class="col-auto">
+                <p class="text-muted">@{{userResponse.username}}</p>
+              </div>
+
+              <form [formGroup]="tweetForm" (ngSubmit)="postTweet()">
+
+                <div class="form-group row justify-content-center">
+                  <textarea placeholder="Write your message..." rows="3" formControlName="tweetBody"
+                    class="form-control rounded border-info shadow-sm"
+                    [ngClass]="{ 'is-invalid': submitted && f['tweetBody'].errors }"></textarea>
+                  <div *ngIf="submitted && f['tweetBody'].errors" class="invalid-feedback">
+                    <div *ngIf="f['tweetBody'].errors?.['required']">
+                      Tweet text is required
+                    </div>
+                    <div *ngIf="f['tweetBody'].errors['maxlength']">
+                      Tweet content cannot exceed 144 characters!
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6 text-start">
+                    <button [disabled]="loading" type="submit" class="btn btn-primary">
+                      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                      Post
+                    </button>
+                  </div>
+                  <div class="col-6 text-end" *ngIf="!addTagClicked">
+                    <button class="btn btn-secondary" (click)="addTag()">
+                      Tag
+                    </button>
+                  </div>
+                  <div class="col-6 text-end" *ngIf="addTagClicked">
+                    <button class="btn btn-danger float-right" (click)="removeTag()">
+                      X
+                    </button>
+                    <input type="text" formControlName="tweetTag" placeholder="Tag"
+                      class="form-control col-9 rounded border-info shadow-sm"
+                      [ngClass]="{'is-invalid': submitted && f['tweetTag'].errors}" />
+                    <div *ngIf="submitted && f['tweetTag'].errors" class="invalid-feedback">
+                      <div *ngIf="f['tweetTag'].errors['maxlength']">
+                        Tag content cannot exceed 50 characters!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Post tweet Chat -->
+
+    <div class="row py-1" *ngFor="let tweet of tweetList; trackBy: trackTweet">
+      <div class="col-6 col-lg-6 mx-auto">
+        <div class="bg-white rounded shadow-lg px-3 py-3">
+
+          <div class="d-flex flex-column pb-4">
+            <div class="row px-3 py-1">
+              <div class="col-1">
+                <img src="/assets/images/272-2720607_this-icon-for-gender-neutral-user-circle-hd.png" alt="Avatar"
+                  width="40px" style="padding: 0.2rem;"
+                  class="img-responsive rounded-circle border border-dark justify-content-right">
+              </div>
+              <div class="col-auto align-self-center text-start">
+                <h5 class="font-weight-bold">
+                  {{userResponse.firstName}} {{userResponse.lastName}}</h5>
+              </div>
+              <div class="col-auto align-self-center">
+                <p class="text-muted pt-2">@{{userResponse.username}}</p>
+              </div>
+              <div class="col-auto align-self-center">
+                <p class="text-muted pt-2 mt-1" style="font-size:smaller;">{{tweet.createdDateTime | dateAgo}}</p>
+              </div>
+              <div class="col align-self-center clearfix">
+                <button title="Delete" class="btn btn-outline-danger ml-2 btn-sm float-end"
+                  (click)="deleteTweet(tweet.id)">
+                  <i class="fa fa-trash"></i></button>
+                <button title="Edit" class="btn btn-outline-dark ml-2 btn-sm float-right"
+                  (click)="openEditTweetPopup(editModal,tweet)">
+                  <i class="fa fa-edit"></i></button>
+              </div>
+            </div>
+            <div class="offset-1 col-11 float-end text-start pb-2">
+              <p>{{ tweet.tweetMessage }}
+                <small class="text-muted" *ngIf="tweet.tag != '' ">#{{ tweet.tag }}</small>
+              </p>
+            </div>
+
+            <div class="offset-1 col-auto text-start">
+              <button title="Like" class="btn btn-outline-primary btn-sm" *ngIf="!(tweet.likedBy | likedByPipe)"
+                (click)="likeTweet(tweet.id)">
+                <i class="fa fa-thumbs-up"> {{ tweet.likedBy | setSize }} </i>
+              </button>
+              <button title="Already liked" class="btn btn-primary btn-sm" *ngIf="(tweet.likedBy | likedByPipe)"
+                (click)="likeTweet(tweet.id)">
+                <i class="fa fa-thumbs-up"> {{ tweet.likedBy | setSize }} </i>
+              </button>
+              <button class="btn btn-outline-info btn-sm ml-2" (click)="openReplyTweetPopup(replyModal,tweet)">
+                <i class="fa fa-reply"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- reply chat -->
+
+          <div *ngIf="tweet.repliedToTweet.length > 0">
+            <div class="row py-1" *ngFor="let replyTweet of tweet.repliedToTweet">
+              <div class="col-10 col-lg-10 ml-auto mr-4">
+                <div class="bg-white rounded-3 border shadow-lg px-3 pt-3 pb-2">
+                  <div class="d-flex flex-column">
+                    <div class="row px-3 py-1">
+                      <div class="col-1">
+                        <img src="/assets/images/272-2720607_this-icon-for-gender-neutral-user-circle-hd.png"
+                          alt="Avatar" width="25px" style="padding: 0.1rem;"
+                          class="img-responsive rounded-circle border border-dark justify-content-right">
+                      </div>
+                      <div class="col-auto align-self-center text-start">
+                        <p class="text-muted">@{{ replyTweet.createdBy }}</p>
+                      </div>
+                      <div class="col-auto align-self-center">
+                        <p class="text-muted pt-1" style="font-size:x-small;">{{replyTweet.createdDateTime | dateAgo}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="offset-1 col-11 float-end text-start pb-2">
+                      <p>{{ replyTweet.tweetMessage }}
+                        <small class="text-muted" *ngIf="replyTweet.tag != '' ">#{{ replyTweet.tag }}</small>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<!-- edit tweet -->
+<ng-template #editModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Tweet</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="editTweetForm" (ngSubmit)="editTweetSubmit()">
+
+      <div class="form-group row justify-content-center px-3">
+        <textarea [(ngModel)]="tweetRequest.tweetMessage" rows="3" formControlName="editTweetBody"
+          class="form-control rounded border-info shadow-sm"
+          [ngClass]="{ 'is-invalid': submitted && editTweetForm.controls['editTweetBody'].errors }"></textarea>
+        <div *ngIf="submitted && editTweetForm.controls['editTweetBody'].errors" class="invalid-feedback">
+          <div *ngIf="editTweetForm.controls['editTweetBody'].errors?.['required']">
+            Tweet text is required
+          </div>
+          <div *ngIf="editTweetForm.controls['editTweetBody'].errors['maxlength']">
+            Tweet content cannot exceed 144 characters!
+          </div>
+        </div>
+      </div>
+
+      <div class="row px-2">
+        <div class="col-6 text-start">
+          <button [disabled]="loading" type="submit" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Save Changes
+          </button>
+        </div>
+        <div class="col-6 text-end" *ngIf="!addTagEditClicked">
+          <button type="button" class="btn btn-secondary" (click)="addTagEdit()">
+            Tag
+          </button>
+        </div>
+        <div class="col-6 text-end" *ngIf="addTagEditClicked">
+          <button type="button"  class="btn btn-danger float-right" (click)="removeTagEdit()">
+            X
+          </button>
+          <input [(ngModel)]="tweetRequest.tag" type="text" formControlName="editTweetTag" placeholder="Tag"
+            class="form-control col-8 float-end rounded border-info shadow-sm mx-2" style="font-size:small ;margin-top: 0.15rem;"
+            [ngClass]="{'is-invalid': submitted && editTweetForm.controls['editTweetTag'].errors}" />
+          <div *ngIf="submitted && editTweetForm.controls['editTweetTag'].errors" class="invalid-feedback">
+            <div *ngIf="editTweetForm.controls['editTweetTag'].errors['maxlength']">
+              Tag content cannot exceed 50 characters!
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- reply tweet -->
+<ng-template #replyModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Reply Tweet</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="replyTweetForm" (ngSubmit)="replyTweetSubmit()">
+
+      <div class="form-group row justify-content-center px-3">
+        <textarea [(ngModel)]="tweetRequest.tweetMessage" rows="3" formControlName="replyTweetBody"
+          class="form-control rounded border-info shadow-sm"
+          [ngClass]="{ 'is-invalid': submitted && replyTweetForm.controls['replyTweetBody'].errors }"></textarea>
+        <div *ngIf="submitted && replyTweetForm.controls['replyTweetBody'].errors" class="invalid-feedback">
+          <div *ngIf="replyTweetForm.controls['replyTweetBody'].errors?.['required']">
+            Tweet text is required
+          </div>
+          <div *ngIf="replyTweetForm.controls['replyTweetBody'].errors['maxlength']">
+            Tweet content cannot exceed 144 characters!
+          </div>
+        </div>
+      </div>
+
+      <div class="row px-2">
+        <div class="col-6 text-start">
+          <button [disabled]="loading" type="submit" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Reply
+          </button>
+        </div>
+        <div class="col-6 text-end" *ngIf="!addTagEditClicked">
+          <button type="button" class="btn btn-secondary" (click)="addTagEdit()">
+            Tag
+          </button>
+        </div>
+        <div class="col-6 text-end" *ngIf="addTagEditClicked">
+          <button type="button"  class="btn btn-danger float-right" (click)="removeTagEdit()">
+            X
+          </button>
+          <input [(ngModel)]="tweetRequest.tag" type="text" formControlName="replyTweetTag" placeholder="Tag"
+            class="form-control float-end col-8 rounded border-info shadow-sm mx-2" style="font-size:small ;margin-top: 0.15rem;"
+            [ngClass]="{'is-invalid': submitted && replyTweetForm.controls['replyTweetTag'].errors}" />
+          <div *ngIf="submitted && replyTweetForm.controls['replyTweetTag'].errors" class="invalid-feedback">
+            <div *ngIf="replyTweetForm.controls['replyTweetTag'].errors['maxlength']">
+              Tag content cannot exceed 50 characters!
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<!-- <div class="modal fade" id="replyModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style=" background: #79a9e0;">
+          <h5 class="modal-title">Reply Tweet</h5>
+          <button type="button" class="close" data-dismiss="modal"></button>
+        </div>
+        <form [formGroup]="replyTweetForm" (ngSubmit)="replyTweetSubmit()">
+          <div class="modal-body">
+            <p>{{ currentTweet.tweetName }}</p>
+            <textarea placeholder="Your reply here..." class="w-100" formControlName="tweetBody" [ngClass]="{
+                'is-invalid':
+                  replySubmitted && replyTweetForm.controls.tweetBody.errors
+              }"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="removeTag()">
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary">Reply</button>
+            <span class="float-right" *ngIf="!addTagClicked">
+              <button class="btn btn-primary" (click)="addTag()">Tag</button>
+            </span>
+            <span class="float-right" *ngIf="addTagClicked">
+              <button class="btn btn-outline-danger btn-sm float-right ml-3" (click)="removeTag()">
+                X
+              </button>
+              <input type="text" formControlName="tweetTag" [ngClass]="{
+                  'is-invalid':
+                    replySubmitted && replyTweetForm.controls.tweetTag.errors
+                }" />
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> -->

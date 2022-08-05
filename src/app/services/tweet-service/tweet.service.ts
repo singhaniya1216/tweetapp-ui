@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Tweet } from 'src/app/model/tweet';
@@ -39,9 +39,9 @@ export class TweetService {
     return this.http.delete(`${this.url}/${username}/delete/${id}`,{headers});
   }
 
-  likeTweet(username:string, id:string,token:string|any): Observable<any>{
-    const headers = new HttpHeaders().set('Authorization', token);
-    return this.http.put(`${this.url}/${username}/like/${id}`,{headers});
+  likeTweet(username:string|any, id:string|any,token:string|any): Observable<HttpStatusCode>{
+    let headers = new HttpHeaders().set('Authorization', token);
+    return this.http.put<HttpStatusCode>(`${this.url}/${username}/like/${id}`,null,{headers:headers});
   }
 
   replyTweet(username:string, id:string, tweetBody:TweetRequest,token:string|any): Observable<any>{
