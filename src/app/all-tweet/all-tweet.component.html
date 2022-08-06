@@ -4,32 +4,9 @@
     <div class="container-fluid pt-5 pb-2">
         <div class="row text-center text-white mb-4">
             <div class="col-6 col-lg-6 mx-auto">
-                <h1>Profile</h1>
+                <h1>All Tweets</h1>
             </div>
         </div>
-        <div class="row py-1 text-center">
-            <div class="col-6 col-lg-6 mx-auto">
-                <div class="bg-white rounded shadow-lg px-3 py-3">
-
-                    <div class="d-flex">
-                        <div class="flex-grow-0 ms-2 my-auto">
-                            <img src="/assets/images/272-2720607_this-icon-for-gender-neutral-user-circle-hd.png"
-                                alt="Avatar" width="150px" class="img-responsive p-2 justify-content-right">
-                        </div>
-                        <div class="flex-grow-1 text-start mx-5 pt-4">
-                            <h4 class="font-weight-bold">
-                                {{userResponse.firstName}} {{userResponse.lastName}}</h4>
-                            <p class="font-italic text-muted mb-0 small">@{{userResponse.username}}</p>
-                            <p class="font-weight-bold text-muted my-2" style="padding-top: 10px;">
-                                Email - {{userResponse.email}}</p>
-                            <p class="font-weight-bold text-muted">
-                                Mobile No - {{userResponse.contactNumber}}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="row py-1" *ngFor="let tweet of tweetList; trackBy: trackTweet">
             <div class="col-6 col-lg-6 mx-auto">
                 <div class="bg-white rounded shadow-lg px-3 py-3">
@@ -41,18 +18,19 @@
                                     alt="Avatar" width="40px" style="padding: 0.2rem;"
                                     class="img-responsive rounded-circle border border-dark justify-content-right">
                             </div>
-                            <div class="col-auto align-self-center text-start">
-                                <h5 class="font-weight-bold">
-                                    {{userResponse.firstName}} {{userResponse.lastName}}</h5>
-                            </div>
                             <div class="col-auto align-self-center">
-                                <p class="text-muted pt-2">@{{userResponse.username}}</p>
+                                <a [routerLink]="['/user',tweet.createdBy]" *ngIf="!(loggedUser==tweet.createdBy)"
+                                    class="font-weight-bold">
+                                    <h5 class="font-weight-bold">@{{ tweet.createdBy }}</h5>
+                                </a>
+                                <h5 *ngIf="loggedUser==tweet.createdBy" class="font-weight-bold">@{{tweet.createdBy}}
+                                </h5>
                             </div>
                             <div class="col-auto align-self-center">
                                 <p class="text-muted pt-2 mt-1" style="font-size:smaller;">{{tweet.createdDateTime |
                                     dateAgo}}</p>
                             </div>
-                            <div *ngIf="viewUser==loggedUser" class="col align-self-center clearfix">
+                            <div *ngIf="tweet.createdBy==loggedUser" class="col align-self-center clearfix">
                                 <button title="Delete" class="btn btn-outline-danger ml-2 btn-sm float-end"
                                     (click)="deleteTweet(tweet.id)">
                                     <i class="fa fa-trash"></i></button>

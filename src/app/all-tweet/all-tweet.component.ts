@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Tweet } from '../model/tweet';
@@ -9,11 +9,11 @@ import { LoginService } from '../services/login-service/login.service';
 import { TweetService } from '../services/tweet-service/tweet.service';
 
 @Component({
-  selector: 'app-get-user',
-  templateUrl: './get-user.component.html',
-  styleUrls: ['./get-user.component.css'],
+  selector: 'app-all-tweet',
+  templateUrl: './all-tweet.component.html',
+  styleUrls: ['./all-tweet.component.css'],
 })
-export class GetUserComponent implements OnInit {
+export class AllTweetComponent implements OnInit {
   userResponse: UserResponse = new UserResponse();
 
   viewUser: string;
@@ -56,50 +56,23 @@ export class GetUserComponent implements OnInit {
 
     this.loggedToken = this.loginService.getToken();
     this.loggedUser = this.loginService.getLoggedUser();
-
-    const routeParams = this.route.snapshot.paramMap;
-    let username = routeParams.get('username');
-    this.viewUser = routeParams.get('username');
-    this.findUser(username);
-    this.getTweets(username);
+    this.getTweets();
   }
 
-  findUser(username: string) {
-    if (null != username) {
-      this.loginService
-        .getUser(username, this.loginService.getToken())
-        .subscribe(
-          (data) => {
-            this.userResponse = data;
-            console.log(this.userResponse);
-          },
-          (err) => {
-            if (err.error.message.includes('Session')) {
-              this.loginService.logout();
-              alert('Session time out!!!\nPlease login again...');
-              this.router.navigate(['login']);
-            }
+  getTweets() {
+    if (null != this.loggedUser) {
+      this.tweetService.getAllTweet(this.loginService.getToken()).subscribe(
+        (data) => {
+          this.tweetList = data;
+        },
+        (err) => {
+          if (err.error.message.includes('Session')) {
+            this.loginService.logout();
+            alert('Session time out!!!\nPlease login again...');
+            this.router.navigate(['login']);
           }
-        );
-    }
-  }
-
-  getTweets(username: string) {
-    if (null != username) {
-      this.tweetService
-        .getUserTweet(username, this.loginService.getToken())
-        .subscribe(
-          (data) => {
-            this.tweetList = data;
-          },
-          (err) => {
-            if (err.error.message.includes('Session')) {
-              this.loginService.logout();
-              alert('Session time out!!!\nPlease login again...');
-              this.router.navigate(['login']);
-            }
-          }
-        );
+        }
+      );
     }
   }
 
@@ -214,7 +187,7 @@ export class GetUserComponent implements OnInit {
 
   refreshTweets() {
     this.tweetList.splice(0);
-    this.tweetService.getUserTweet(this.viewUser, this.loggedToken).subscribe(
+    this.tweetService.getAllTweet(this.loggedToken).subscribe(
       (data: any) => {
         this.tweetList.push(...data);
       },

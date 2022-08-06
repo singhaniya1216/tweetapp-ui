@@ -2,6 +2,11 @@
 
 <body>
   <div class="container-fluid pt-5 pb-2">
+    <div class="row text-center text-white mb-4">
+      <div class="col-6 col-lg-6 mx-auto">
+          <h1>Home</h1>
+      </div>
+  </div>
     <div class="row py-1 text-center">
       <div class="col-6 col-lg-6 mx-auto">
         <div class="bg-white rounded shadow-lg px-3 py-3">
@@ -135,7 +140,8 @@
                           class="img-responsive rounded-circle border border-dark justify-content-right">
                       </div>
                       <div class="col-auto align-self-center text-start">
-                        <p class="text-muted">@{{ replyTweet.createdBy }}</p>
+                        <a [routerLink]="['/user',replyTweet.createdBy]" *ngIf="!(loggedUser==replyTweet.createdBy)" class="text-muted"><p class="text-muted">@{{ replyTweet.createdBy }}</p></a>
+                        <p *ngIf="loggedUser==replyTweet.createdBy" class="text-muted">@{{ replyTweet.createdBy }}</p>
                       </div>
                       <div class="col-auto align-self-center">
                         <p class="text-muted pt-1" style="font-size:x-small;">{{replyTweet.createdDateTime | dateAgo}}

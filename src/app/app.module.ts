@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule, NgForm, NgModel, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +17,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DateAgoPipe } from './pipes/date-ago.pipe';
 import { SetSizePipe } from './pipes/set-size.pipe';
 import { LikedByPipePipe } from './pipes/liked-by-pipe.pipe';
+import { AllTweetComponent } from './all-tweet/all-tweet.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { LikedByPipePipe } from './pipes/liked-by-pipe.pipe';
     GetUserComponent,
     DateAgoPipe,
     SetSizePipe,
-    LikedByPipePipe
+    LikedByPipePipe,
+    AllTweetComponent
   ],
   imports: [
     BrowserModule,

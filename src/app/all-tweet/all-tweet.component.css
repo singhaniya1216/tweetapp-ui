@@ -1,0 +1,17 @@
+a {
+  text-decoration: none;
+}
+
+a h5 {
+  color: black !important;
+}
+
+a:hover p {
+  color: black !important;
+  text-decoration: underline;
+}
+
+a:hover h5 {
+  color: black !important;
+  text-decoration: underline;
+}

@@ -63,6 +63,7 @@ export class RegistrationComponent implements OnInit {
         console.log(data);
         if (data.username !== undefined) {
           this.success = true;
+          alert('Registration Successful!!!\nRedirecting to login page...');
           this.router.navigate(['/login']);
       }
        },

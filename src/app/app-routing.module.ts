@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AllTweetComponent } from './all-tweet/all-tweet.component';
 import { AllUsersComponent } from './all-users/all-users.component';
 import { GetUserComponent } from './get-user/get-user.component';
 import { HomeComponent } from './home/home.component';
@@ -14,7 +15,8 @@ const routes: Routes = [
   {path: 'register', component: RegistrationComponent, pathMatch: 'full'},
   {path: 'reset',component: PasswordResetComponent,pathMatch: 'full'},
   {path: 'allUsers',component: AllUsersComponent,pathMatch: 'full',canActivate:[AuthGuard]},
-  {path: 'user/:username',component: GetUserComponent,pathMatch: 'full',canActivate:[AuthGuard]}
+  {path: 'user/:username',component: GetUserComponent,pathMatch: 'full',canActivate:[AuthGuard]},
+  {path: 'allTweets',component: AllTweetComponent,pathMatch: 'full',canActivate:[AuthGuard]}
 ];
 
 @NgModule({

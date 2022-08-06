@@ -43,6 +43,7 @@ export class PasswordResetComponent implements OnInit {
   onSubmit() {
     this.submitted=true;
     this.isUsernameExist=true;
+    if(this.form.valid){
     console.log(this.form.value)
     this.user=Object.assign({},this.form.value);
     this.loginService.forgotPassword(this.user.password,this.user.username).subscribe(
@@ -58,6 +59,7 @@ export class PasswordResetComponent implements OnInit {
         }
       }
     );
+  }
   }
   resetDaa(resetDaa: any) {
     throw new Error('Method not implemented.');

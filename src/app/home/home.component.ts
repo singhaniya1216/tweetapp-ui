@@ -32,7 +32,6 @@ export class HomeComponent implements OnInit {
   currentTweet: Tweet = new Tweet();
   addTagClicked: boolean = false;
   addTagEditClicked: boolean = false;
-  currentRouteUsername: string;
   tweetRequest: TweetRequest = new TweetRequest();
 
   constructor(
@@ -44,6 +43,9 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loggedToken = this.loginService.getToken();
+    this.loggedUser = this.loginService.getLoggedUser();
+
     if (!this.loginService.isLoggedIn()) {
       this.router.navigateByUrl('login');
     }
@@ -62,41 +64,44 @@ export class HomeComponent implements OnInit {
       editTweetBody: ['', [Validators.required, Validators.maxLength(144)]],
       editTweetTag: ['', Validators.maxLength(50)],
     });
-
-    this.loggedToken = this.loginService.getToken();
-    this.loggedUser = this.loginService.getLoggedUser();
     this.findUser(this.loggedUser);
     this.getTweets(this.loggedUser);
   }
 
   findUser(username: string) {
-    this.loginService.getUser(username, this.loggedToken).subscribe(
-      (data) => {
-        this.userResponse = data;
-        console.log(this.userResponse);
-      },
-      (err) => {
-        if (err.error.message.includes('Session')) {
-          this.loginService.logout();
-          this.router.navigate(['login']);
+    if (null != username) {
+      this.loginService.getUser(username, this.loggedToken).subscribe(
+        (data) => {
+          this.userResponse = data;
+          console.log(this.userResponse);
+        },
+        (err) => {
+          if (err.error.message.includes('Session')) {
+            this.loginService.logout();
+            alert('Session time out!!!\nPlease login again...');
+            this.router.navigate(['login']);
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   getTweets(username: string) {
-    this.tweetService.getUserTweet(username, this.loggedToken).subscribe(
-      (data) => {
-        this.tweetList = data;
-        console.log(this.tweetList);
-      },
-      (err) => {
-        if (err.error.message.includes('Session')) {
-          this.loginService.logout();
-          this.router.navigate(['login']);
+    if (null != username) {
+      this.tweetService.getUserTweet(username, this.loggedToken).subscribe(
+        (data) => {
+          this.tweetList = data;
+          console.log(this.tweetList);
+        },
+        (err) => {
+          if (err.error.message.includes('Session')) {
+            this.loginService.logout();
+            alert('Session time out!!!\nPlease login again...');
+            this.router.navigate(['login']);
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   postTweet() {
@@ -122,6 +127,7 @@ export class HomeComponent implements OnInit {
           this.loading = false;
           if (err.error.message.includes('Session')) {
             this.loginService.logout();
+            alert('Session time out!!!\nPlease login again...');
             this.router.navigate(['login']);
           }
         }
@@ -140,6 +146,7 @@ export class HomeComponent implements OnInit {
         (err) => {
           if (err.error.message.includes('Session')) {
             this.loginService.logout();
+            alert('Session time out!!!\nPlease login again...');
             this.router.navigate(['login']);
           }
         }
@@ -156,6 +163,7 @@ export class HomeComponent implements OnInit {
         (err) => {
           if (err.error.message.includes('Session')) {
             this.loginService.logout();
+            alert('Session time out!!!\nPlease login again...');
             this.router.navigate(['login']);
           }
         }
@@ -194,6 +202,7 @@ export class HomeComponent implements OnInit {
         (err) => {
           if (err.error.message.includes('Session')) {
             this.loginService.logout();
+            alert('Session time out!!!\nPlease login again...');
             this.router.navigate(['login']);
           }
         }
@@ -202,6 +211,7 @@ export class HomeComponent implements OnInit {
 
   openReplyTweetPopup(content: any, tweet: Tweet) {
     this.currentTweet = tweet;
+    this.addTagEditClicked = false;
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
   replyTweetSubmit() {
@@ -228,6 +238,7 @@ export class HomeComponent implements OnInit {
         (err) => {
           if (err.error.message.includes('Session')) {
             this.loginService.logout();
+            alert('Session time out!!!\nPlease login again...');
             this.router.navigate(['login']);
           }
         }
@@ -236,25 +247,18 @@ export class HomeComponent implements OnInit {
 
   refreshTweets() {
     this.tweetList.splice(0);
-    if (this.currentRouteUsername === null) {
-      this.tweetService.getAllTweet(this.loggedToken).subscribe((data: any) => {
+    this.tweetService.getUserTweet(this.loggedUser, this.loggedToken).subscribe(
+      (data: any) => {
         this.tweetList.push(...data);
-      });
-    } else {
-      this.tweetService
-        .getUserTweet(this.loggedUser, this.loggedToken)
-        .subscribe(
-          (data: any) => {
-            this.tweetList.push(...data);
-          },
-          (err) => {
-            if (err.error.message.includes('Session')) {
-              this.loginService.logout();
-              this.router.navigate(['login']);
-            }
-          }
-        );
-    }
+      },
+      (err) => {
+        if (err.error.message.includes('Session')) {
+          this.loginService.logout();
+          alert('Session time out!!!\nPlease login again...');
+          this.router.navigate(['login']);
+        }
+      }
+    );
     console.log(this.tweetList);
   }
 
