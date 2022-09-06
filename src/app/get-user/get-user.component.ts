@@ -91,6 +91,7 @@ export class GetUserComponent implements OnInit {
         .subscribe(
           (data) => {
             this.tweetList = data;
+            this.tweetList = this.tweetList.sort((a, b) => new Date(b.createdDateTime).getTime() - new Date(a.createdDateTime).getTime());
           },
           (err) => {
             if (err.error.message.includes('Session')) {
@@ -217,6 +218,7 @@ export class GetUserComponent implements OnInit {
     this.tweetService.getUserTweet(this.viewUser, this.loggedToken).subscribe(
       (data: any) => {
         this.tweetList.push(...data);
+        this.tweetList = this.tweetList.sort((a, b) => new Date(b.createdDateTime).getTime() - new Date(a.createdDateTime).getTime());
       },
       (err) => {
         if (err.error.message.includes('Session')) {

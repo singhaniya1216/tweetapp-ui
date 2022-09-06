@@ -107,7 +107,7 @@
             </div>
             <div class="offset-1 col-11 float-end text-start pb-2">
               <p>{{ tweet.tweetMessage }}
-                <small class="text-muted" *ngIf="tweet.tag != '' ">#{{ tweet.tag }}</small>
+                <small class="text-muted" *ngIf="(tweet.tag != null && tweet.tag != '')">#{{ tweet.tag }}</small>
               </p>
             </div>
 
@@ -150,7 +150,7 @@
                     </div>
                     <div class="offset-1 col-11 float-end text-start pb-2">
                       <p>{{ replyTweet.tweetMessage }}
-                        <small class="text-muted" *ngIf="replyTweet.tag != '' ">#{{ replyTweet.tag }}</small>
+                        <small class="text-muted" *ngIf="(replyTweet.tag != null && replyTweet.tag != '')">#{{ replyTweet.tag }}</small>
                       </p>
                     </div>
                   </div>

@@ -64,6 +64,7 @@ export class AllTweetComponent implements OnInit {
       this.tweetService.getAllTweet(this.loginService.getToken()).subscribe(
         (data) => {
           this.tweetList = data;
+          this.tweetList = this.tweetList.sort((a, b) => new Date(b.createdDateTime).getTime() - new Date(a.createdDateTime).getTime());
         },
         (err) => {
           if (err.error.message.includes('Session')) {
@@ -190,6 +191,7 @@ export class AllTweetComponent implements OnInit {
     this.tweetService.getAllTweet(this.loggedToken).subscribe(
       (data: any) => {
         this.tweetList.push(...data);
+        this.tweetList = this.tweetList.sort((a, b) => new Date(b.createdDateTime).getTime() - new Date(a.createdDateTime).getTime());
       },
       (err) => {
         if (err.error.message.includes('Session')) {

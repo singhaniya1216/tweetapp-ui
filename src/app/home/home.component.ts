@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Tweet } from '../model/tweet';
 import { LoginService } from '../services/login-service/login.service';
 import { TweetService } from '../services/tweet-service/tweet.service';
-import { MatDialog } from '@angular/material/dialog';
 import { TweetRequest } from '../model/tweet-request';
 import { UserResponse } from '../model/user-response';
-import * as $ from 'jQuery';
-import * as bootstrap from 'bootstrap';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -91,6 +88,7 @@ export class HomeComponent implements OnInit {
       this.tweetService.getUserTweet(username, this.loggedToken).subscribe(
         (data) => {
           this.tweetList = data;
+          this.tweetList = this.tweetList.sort((a, b) => new Date(b.createdDateTime).getTime() - new Date(a.createdDateTime).getTime());
           console.log(this.tweetList);
         },
         (err) => {
@@ -250,6 +248,7 @@ export class HomeComponent implements OnInit {
     this.tweetService.getUserTweet(this.loggedUser, this.loggedToken).subscribe(
       (data: any) => {
         this.tweetList.push(...data);
+        this.tweetList = this.tweetList.sort((a, b) => new Date(b.createdDateTime).getTime() - new Date(a.createdDateTime).getTime());
       },
       (err) => {
         if (err.error.message.includes('Session')) {
