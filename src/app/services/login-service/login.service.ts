@@ -11,7 +11,7 @@ import { JwtResponse } from 'src/app/model/jwt-response';
 })
 export class LoginService {
 
-  url = "http://localhost:8090/api/v1.0/tweets"
+  url = "http://35.154.121.75/api/v1.0/tweets";
 
   constructor(private http:HttpClient) { }
 
