@@ -10,7 +10,7 @@ import { TweetRequest } from 'src/app/model/tweet-request';
 export class TweetService {
 
 
-  url = "http://35.154.121.75/api/v1.0/tweets";
+  url = "http://13.233.48.9/api/v1.0/tweets";
 
   constructor(private http:HttpClient) { }
 
