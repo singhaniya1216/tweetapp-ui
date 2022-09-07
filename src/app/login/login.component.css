@@ -1,3 +1,8 @@
 .rounded-pill{
     width: 30ch;
+    align-self: start;
+}
+
+.password-len{
+    width: 27ch;
 }

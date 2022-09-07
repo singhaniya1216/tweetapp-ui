@@ -18,6 +18,8 @@ export class LoginComponent implements OnInit {
     password: new FormControl(''),
   });
 
+  showPassword : boolean = false;
+
   submitted : boolean = false;
   isUsernameExist :boolean = true;
 
@@ -34,6 +36,10 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required],
     });
+  }
+
+  passwordShow(){
+    this.showPassword = !this.showPassword;
   }
 
   get f() { 

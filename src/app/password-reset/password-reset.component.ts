@@ -22,6 +22,8 @@ export class PasswordResetComponent implements OnInit {
   submitted : boolean = false;
   isUsernameExist :boolean = true;
   user: Signin;
+  showPassword : boolean = false;
+  showConfirmPassword : boolean = false;
   
   constructor(private formBuilder: FormBuilder,private router:Router,private loginService: LoginService) { }
 
@@ -36,6 +38,14 @@ export class PasswordResetComponent implements OnInit {
     });
   }
 
+  passwordShow(){
+    this.showPassword = !this.showPassword;
+  }
+
+  confirmPasswordShow(){
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+  
   get f() { 
     return this.form.controls; 
   }

@@ -71,9 +71,12 @@
 
                             <div class="form-group row justify-content-center">
                                 <label class="form-control-label text-muted">Password</label>
-                                <input formControlName="password" type="text" placeholder="Password"
-                                    class="form-control rounded-pill border-info shadow-sm"
+                                <input formControlName="password" [type]="showPassword ? 'text' : 'password'" placeholder="Password"
+                                    class="form-control rounded-pill border-info shadow-sm password-len"
                                     [ngClass]="{'is-invalid': submitted && f['password'].errors}" required />
+                                    <a (click)="passwordShow()" class="col-1">
+                                        <i [class]="showPassword ? 'fa fa-eye small mt-2 pt-1' : 'fa fa-eye-slash small mt-2 pt-1'" aria-hidden="true">
+                                            </i></a>
                                 <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
                                     <div *ngIf="f['password'].errors['required']">Password is required</div>
                                     <div *ngIf="f['password'].errors['minlength']">Password must be at least 6
@@ -83,9 +86,12 @@
 
                             <div class="form-group row justify-content-center">
                                 <label class="form-control-label text-muted">Confirm Password</label>
-                                <input formControlName="confirmPassword" type="text" placeholder="Confirm Password"
-                                    class="form-control rounded-pill border-info shadow-sm"
+                                <input formControlName="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'" placeholder="Confirm Password"
+                                    class="form-control rounded-pill border-info shadow-sm password-len"
                                     [ngClass]="{'is-invalid': submitted && f['confirmPassword'].errors}" required />
+                                    <a (click)="confirmPasswordShow()" class="col-1">
+                                        <i [class]="showConfirmPassword ? 'fa fa-eye small mt-2 pt-1' : 'fa fa-eye-slash small mt-2 pt-1'" aria-hidden="true">
+                                            </i></a>
                                 <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
                                     <div *ngIf="f['confirmPassword'].errors['required']">
                                         Confirm Password is required

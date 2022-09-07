@@ -20,7 +20,10 @@ export class RegistrationComponent implements OnInit {
     username: new FormControl(''),
     password: new FormControl(''),
     confirmPassword: new FormControl(''),
-  });;
+  });
+
+  showPassword : boolean = false;
+  showConfirmPassword : boolean = false;
 
   submitted = false;
   loading = false;
@@ -45,6 +48,14 @@ export class RegistrationComponent implements OnInit {
     ,{     
       validators:[Validation.match('password', 'confirmPassword')]
     });
+  }
+
+  passwordShow(){
+    this.showPassword = !this.showPassword;
+  }
+
+  confirmPasswordShow(){
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 
   get f() { 
