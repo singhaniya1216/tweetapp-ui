@@ -37,7 +37,7 @@
                 <input formControlName="password" [type]="showPassword ? 'text' : 'password'" placeholder="Password"
                   class="form-control rounded-pill border-info shadow-sm password-len"
                   [ngClass]="{'is-invalid': submitted && f['password'].errors}" required />
-                  <a (click)="passwordShow()" class="col-auto">
+                  <a (click)="passwordShow()" class="col-1">
                     <i [class]="showPassword ? 'fa fa-eye small mt-2 pt-1' : 'fa fa-eye-slash small mt-2 pt-1'" aria-hidden="true">
 
                   </i></a>
@@ -51,10 +51,6 @@
                 <button type="submit" class="btn btn-primary btn-block text-uppercase mb-3 rounded-pill shadow-sm">
                   Sign in
                 </button>
-              </div>
-
-              <div class="row justify-content-center my-2">
-                <a href="/reset"><small class="text-muted">Forgot Password?</small></a>
               </div>
             </div>
           </div>

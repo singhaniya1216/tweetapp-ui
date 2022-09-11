@@ -13,7 +13,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent, pathMatch: 'full'},
   {path: '', component: HomeComponent, pathMatch: 'full'},
   {path: 'register', component: RegistrationComponent, pathMatch: 'full'},
-  {path: 'reset',component: PasswordResetComponent,pathMatch: 'full'},
+  {path: 'reset',component: PasswordResetComponent,pathMatch: 'full',canActivate:[AuthGuard]},
   {path: 'allUsers',component: AllUsersComponent,pathMatch: 'full',canActivate:[AuthGuard]},
   {path: 'user/:username',component: GetUserComponent,pathMatch: 'full',canActivate:[AuthGuard]},
   {path: 'allTweets',component: AllTweetComponent,pathMatch: 'full',canActivate:[AuthGuard]}
